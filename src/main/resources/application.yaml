@@ -1,0 +1,58 @@
+
+server:
+  port: 8084
+  
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/orderdb
+    username: udemySpringChadDardy
+    password: root
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  application:
+    name: ORDER-SERVICE
+  config:
+    import: configserver:http://localhost:8086
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://dev-73707689.okta.com/oauth2/default
+      client:
+        registration:
+          internal-client:
+            provider: okta
+            authorization-grant-type: client_credentials
+            scope: internal
+            client-id: 0oaawjpwdlqWqvpTn5d7
+            client-secret: grMT9mfEy4CWfcEgak1LzKW6bFZnsQPxn7AB-CjR7kjgSFQiavq4kG3KKa9bNKvp
+        provider:
+          okta:
+            issuer-uri: https://dev-73707689.okta.com/oauth2/default
+            
+    
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+ 
+logging:
+  pattern:
+    level: "%5p [${spring.application.name:},%X{traceId:-},%X{spanId:-}]"
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      external: 
+        event-consumer-buffer-size: 10
+        failure-rate-threshold: 50
+        minimum-number-of-calls: 5
+        automatic-transition-from-open-to-half-open-enabled: true
+        wait-duration-in-open-state: 5s
+        permitted-number-of-calls-in-half-open-state: 3
+        sliding-window-size: 10
+        sliding-window-type: count-based
+        
+        

@@ -1,0 +1,9 @@
+{
+    "id": 152,
+    "paymentMode": "CASH",
+    "paymentStatus": "SUCCESS",
+    "amount": 500,
+    "paymentDate": "2023-03-21",
+    "orderId": 1,
+    "referenceNumber": 0
+}
